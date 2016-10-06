@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+#    50-oniehelp - Display compile command help to users
+
+echo
+echo "For a list of the current 'make' commands for ONIE, execute: oniehelp"
+echo "To compile ONIE, 'cd /data/onie/build-config' before executing the 'make' command."
+echo
+
+
+

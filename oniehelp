@@ -1,0 +1,30 @@
+#!/bin/bash
+
+USAGE="Usage: $0 [-h] | [vendor] [device]"
+
+if [[ $1 == "-h" ]]; then echo -e "\n$USAGE" >&2; exit 1; fi
+if [[ $# -ge 3 ]]; then echo -e "Error: Wrong number of arguments.\n$USAGE" >&2; exit 1; fi
+command -v tree >/dev/null 2>&1 || { echo >&2 "Error: Please install 'tree' and rerun this command. Aborting..." >&2; exit 1; }
+
+#checking arguments
+if [[ $# -lt 1 ]]; then
+    #List all Make commands
+    #MTREE=$(tree -d -L 2 -n /onie/machine)
+    echo "ONIE 'make' commands for all devices:"
+    grep -r 'make MACHINEROOT' /data/onie/machine | grep -Po 'make MACHINEROOT=../machine/.+\sMACHINE=.+\sall'
+
+elif [[ $# -eq 1  ]]; then
+    #list make commands for specific vendor
+    #MTREE=$(tree -d -L 1 -n /onie/machine/$1)
+    echo "ONIE 'make' commands for $1 devices:"
+    grep -r 'make MACHINEROOT' /data/onie/machine | grep -iPo "make MACHINEROOT=../machine/${1}.*\sMACHINE=.+\sall"
+
+elif [[ $# -eq 2  ]]; then
+    #list make commands for specific vendor
+    #MTREE=$(tree -d -L 1 -n /onie/machine/$1 | grep )
+    echo "ONIE 'make' commands for $1 device $2:"
+    grep -r 'make MACHINEROOT' /data/onie/machine | grep -iPo "make MACHINEROOT=../machine/${1}.*\sMACHINE=.*${2}.*\sall"
+
+fi
+
+exit 0;
